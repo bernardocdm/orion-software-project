@@ -1,0 +1,20 @@
+@startuml implant
+title Diagrama de Implantação - Orion AutoWorks
+
+node "Computador do Usuário\n(Browser)" as Client {
+    artifact "Interface Web"
+}
+
+node "Servidor de Aplicação" as Server {
+    artifact "Orion AutoWorks"
+}
+
+database "Banco de Dados" as DB
+
+cloud "Servidor de Backup\n(Opcional)" as Backup
+
+Client --> Server : HTTPS
+Server --> DB : SQL
+DB --> Backup : Backup Diário
+
+@enduml

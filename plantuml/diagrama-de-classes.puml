@@ -1,0 +1,69 @@
+@startuml class
+title Diagrama de Classes - Orion AutoWorks
+
+abstract class Usuario {
+    -id: int
+    -nome: String
+    -email: String
+    -senha: String
+}
+
+class Cliente {
+    -cpf: String
+    -telefone: String
+}
+
+class Atendente
+
+class Mecanico {
+    -especialidade: String
+}
+
+class Administrador
+
+class Veiculo {
+    -placa: String
+    -modelo: String
+    -marca: String
+    -ano: int
+}
+
+class OrdemServico {
+    -id: int
+    -dataAbertura: Date
+    -status: String
+    -descricao: String
+}
+
+class Orcamento {
+    -id: int
+    -valorTotal: double
+    -status: String
+}
+
+class Peca {
+    -id: int
+    -nome: String
+    -preco: double
+}
+
+class Estoque {
+    -id: int
+    -quantidade: int
+}
+
+Usuario <|-- Cliente
+Usuario <|-- Atendente
+Usuario <|-- Mecanico
+Usuario <|-- Administrador
+
+Cliente "1" -- "0..*" Veiculo : possui >
+Veiculo "1" -- "0..*" OrdemServico : gera >
+OrdemServico "1" -- "1" Orcamento : possui >
+OrdemServico "1" -- "1" Atendente : criada por >
+OrdemServico "1" -- "1" Mecanico : executada por >
+
+OrdemServico "1" -- "0..*" Peca : utiliza >
+Estoque "1" -- "0..*" Peca : controla >
+
+@enduml

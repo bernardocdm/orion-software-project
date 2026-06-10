@@ -1,0 +1,32 @@
+@startuml Seq
+title UC-03 - Criar Ordem de Serviço
+
+actor Atendente
+participant "Sistema Orion AutoWorks" as Sistema
+database "Banco de Dados" as BD
+
+Atendente -> Sistema: Solicitar criação da OS
+activate Sistema
+
+Sistema -> BD: Verificar Cliente
+activate BD
+BD --> Sistema: Cliente encontrado
+deactivate BD
+
+Sistema -> BD: Verificar Veículo
+activate BD
+BD --> Sistema: Veículo encontrado
+deactivate BD
+
+Atendente -> Sistema: Informar dados da OS
+
+Sistema -> BD: Salvar Ordem de Serviço
+activate BD
+BD --> Sistema: OS criada com sucesso
+deactivate BD
+
+Sistema --> Atendente: Exibir confirmação
+
+deactivate Sistema
+
+@enduml
