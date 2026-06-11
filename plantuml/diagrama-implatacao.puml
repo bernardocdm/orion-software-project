@@ -1,20 +1,47 @@
 @startuml implant
 title Diagrama de Implantação - Orion AutoWorks
 
-node "Computador do Usuário\n(Browser)" as Client {
-    artifact "Interface Web"
+skinparam componentStyle rectangle
+top to bottom direction
+
+node "Estação do Usuário" <<device>> as Client {
+    artifact "Navegador Web\n(Chrome, Edge, Firefox)" as Browser
 }
 
-node "Servidor de Aplicação" as Server {
-    artifact "Orion AutoWorks"
+node "Servidor de Aplicação" <<server>> as AppServer {
+
+    artifact "Orion AutoWorks\nAplicação Web" as WebApp
+
+    component "Módulo de\nUsuários" as Usuario
+    component "Módulo de\nClientes e Veículos" as ClienteVeiculo
+    component "Módulo de\nOrdens de Serviço" as OS
+    component "Módulo de\nEstoque" as Estoque
+    component "Módulo de\nRelatórios" as Relatorios
+
+    WebApp --> Usuario
+    WebApp --> ClienteVeiculo
+    WebApp --> OS
+    WebApp --> Estoque
+    WebApp --> Relatorios
 }
 
-database "Banco de Dados" as DB
+database "Servidor de Banco de Dados\nOrionDB" <<database>> as DB
 
-cloud "Servidor de Backup\n(Opcional)" as Backup
+node "Servidor de Backup" <<server>> as Backup {
+    artifact "Rotina de Backup\nDiário"
+}
 
-Client --> Server : HTTPS
-Server --> DB : SQL
-DB --> Backup : Backup Diário
+cloud "Serviço de E-mail\n(Notificações)" as Email
+
+Browser --> WebApp : HTTPS
+Usuario --> DB : SQL
+ClienteVeiculo --> DB : SQL
+OS --> DB : SQL
+Estoque --> DB : SQL
+Relatorios --> DB : SQL
+
+OS --> Email : Envia notificação\nde orçamento/status
+
+DB --> Backup : Backup periódico
 
 @enduml

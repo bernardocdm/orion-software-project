@@ -1,0 +1,27 @@
+@startuml
+title Diagrama de Estados - Ordem de Serviço
+
+skinparam shadowing false
+
+state "Aguardando Avaliação" as Avaliacao
+state "Aguardando Aprovação" as Aprovacao
+state "Em Manutenção" as Manutencao
+state "Aguardando Retirada" as Retirada
+state "Finalizada" as Finalizada
+state "Cancelada" as Cancelada
+
+[*] --> Avaliacao : Criar OS
+
+Avaliacao --> Aprovacao : Gerar orçamento
+
+Aprovacao --> Manutencao : Cliente aprova
+Aprovacao --> Cancelada : Cliente rejeita
+
+Manutencao --> Retirada : Serviço concluído
+
+Retirada --> Finalizada : Pagamento confirmado
+
+Finalizada --> [*]
+Cancelada --> [*]
+
+@enduml

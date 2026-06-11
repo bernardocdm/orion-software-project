@@ -1,0 +1,63 @@
+@startuml arq
+title Arquitetura Geral - Orion AutoWorks
+
+skinparam componentStyle rectangle
+left to right direction
+
+actor Cliente
+actor Atendente
+actor "Mecânico" as Mecanico
+actor Administrador
+
+package "Camada de Apresentação" {
+    component "Interface Web\n(Portal Orion AutoWorks)" as Front
+}
+
+package "Camada de Aplicação" {
+
+    component "Módulo de\nAutenticação e Usuários" as Auth
+    component "Módulo de\nClientes e Veículos" as ClienteVeiculo
+    component "Módulo de Gestão de\nOrdens de Serviço" as OS
+    component "Módulo de\nOrçamentos" as Orc
+    component "Módulo de\nEstoque de Peças" as Estoque
+    component "Módulo de\nRelatórios" as Relatorios
+
+}
+
+package "Camada de Persistência" {
+    database "Banco de Dados\nOrionDB" as DB
+}
+
+cloud "Serviço de Backup" as Backup
+
+' Usuários acessam a interface
+Cliente --> Front
+Atendente --> Front
+Mecanico --> Front
+Administrador --> Front
+
+' Interface consome os módulos
+Front --> Auth
+Front --> ClienteVeiculo
+Front --> OS
+Front --> Orc
+Front --> Estoque
+Front --> Relatorios
+
+' Integração entre módulos
+OS --> ClienteVeiculo : consulta dados
+OS --> Orc : gera orçamento
+OS --> Estoque : solicita peças
+
+' Persistência
+Auth --> DB
+ClienteVeiculo --> DB
+OS --> DB
+Orc --> DB
+Estoque --> DB
+Relatorios --> DB
+
+' Backup
+DB --> Backup : backup periódico
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml comp
+title Diagrama de Componentes - Orion AutoWorks
+
+package "Orion AutoWorks" {
+
+    [Interface Web] as UI
+
+    component "Gerenciamento\n de Clientes" as ClienteComp
+    component "Gerenciamento\n de Veículos" as VeiculoComp
+    component "Gerenciamento\n de Ordens de Serviço" as OSComp
+    component "Gerenciamento\n de Estoque" as EstoqueComp
+    component "Gerenciamento\n de Usuários" as UsuarioComp
+
+    database "Banco de Dados" as DB
+
+    UI --> ClienteComp
+    UI --> VeiculoComp
+    UI --> OSComp
+    UI --> EstoqueComp
+    UI --> UsuarioComp
+
+    ClienteComp --> DB
+    VeiculoComp --> DB
+    OSComp --> DB
+    EstoqueComp --> DB
+    UsuarioComp --> DB
+}
+
+@enduml

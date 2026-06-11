@@ -1,0 +1,105 @@
+@startuml
+title Modelo de Dados - Orion AutoWorks
+
+hide methods
+hide stereotypes
+skinparam linetype ortho
+
+entity Usuario {
+  * id : INT <<PK>>
+  --
+  nome : VARCHAR
+  email : VARCHAR
+  senha : VARCHAR
+  perfil : VARCHAR
+}
+
+entity Cliente {
+  * id : INT <<PK, FK>>
+  --
+  cpf : VARCHAR
+  telefone : VARCHAR
+}
+
+entity Atendente {
+  * id : INT <<PK, FK>>
+}
+
+entity Mecanico {
+  * id : INT <<PK, FK>>
+  --
+  especialidade : VARCHAR
+}
+
+entity Administrador {
+  * id : INT <<PK, FK>>
+}
+
+entity Veiculo {
+  * id : INT <<PK>>
+  --
+  placa : VARCHAR
+  marca : VARCHAR
+  modelo : VARCHAR
+  ano : INT
+  cliente_id : INT <<FK>>
+}
+
+entity OrdemServico {
+  * id : INT <<PK>>
+  --
+  descricao : TEXT
+  data_abertura : DATE
+  status : VARCHAR
+  veiculo_id : INT <<FK>>
+  atendente_id : INT <<FK>>
+  mecanico_id : INT <<FK>>
+}
+
+entity Orcamento {
+  * id : INT <<PK>>
+  --
+  valor_total : DECIMAL
+  status : VARCHAR
+  ordem_servico_id : INT <<FK>>
+}
+
+entity Peca {
+  * id : INT <<PK>>
+  --
+  nome : VARCHAR
+  preco : DECIMAL
+}
+
+entity Estoque {
+  * id : INT <<PK>>
+  --
+  quantidade : INT
+  peca_id : INT <<FK>>
+}
+
+entity OrdemServico_Peca {
+  * ordem_servico_id : INT <<FK>>
+  * peca_id : INT <<FK>>
+  --
+  quantidade : INT
+}
+
+Usuario ||--|| Cliente
+Usuario ||--|| Atendente
+Usuario ||--|| Mecanico
+Usuario ||--|| Administrador
+
+Cliente ||--o{ Veiculo
+Veiculo ||--o{ OrdemServico
+Atendente ||--o{ OrdemServico
+Mecanico ||--o{ OrdemServico
+
+OrdemServico ||--|| Orcamento
+
+OrdemServico ||--o{ OrdemServico_Peca
+Peca ||--o{ OrdemServico_Peca
+
+Peca ||--|| Estoque
+
+@enduml
